@@ -1,0 +1,21 @@
+name: Creation des branches
+
+on:
+  issues:
+    types: [assigned]
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [closed]
+
+jobs:
+  create_issue_branch_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Creation branche
+        uses: robvanderleek/create-issue-branch@main
+        with:
+          branchName: "feature/${issue.number}-${issue.title}"
+          defaultBranch: "develop"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
