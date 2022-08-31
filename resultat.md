@@ -47,3 +47,60 @@ jobs:
             cache: 'npm'
 
 ```
+
+
+
+NF4-DO-01
+```yml
+name: Creation des branches
+
+on:
+  issues:
+    types: [assigned]
+  issue_comment:
+    types: [created]
+  pull_request:
+    types: [closed]
+
+jobs:
+  create_issue_branch_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Creation branche
+        uses: robvanderleek/create-issue-branch@main
+        with:
+          branchName: "feature/${issue.number}-${issue.title}"
+          defaultBranch: "develop"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+
+```
+
+
+
+
+NF8-DO-04
+
+```yml
+name: suppresion de branches
+on:
+  pull_request:
+    types:
+      - opened
+      - closed
+      - edited
+      - reopened
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: suppresion de branches
+        uses: koj-co/delete-merged-action@master
+        with:
+          branches: "!main, !develop, *"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+
+```
