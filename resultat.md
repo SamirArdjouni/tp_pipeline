@@ -37,13 +37,20 @@ jobs:
     name: Validate test unitaire
     runs-on: ubuntu-latest
     if: startsWith(github.head_ref, 'feature/')
-         
+
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js Version ${{ matrix.version }}
-          uses: actions/setup-node@v3
-          with:
-            node-version: ${{ matrix.version }}
-            cache: 'npm'
+      - name: Use Node.js Version ${{matrix.version}}
+
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.version }}
+          cache: "npm"
+
+      - name: installation des dépendances
+        run: npm ci
+
+      - name: lancement des test
+        run: npm run test
 
 ```
